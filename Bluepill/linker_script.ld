@@ -15,12 +15,7 @@ SECTIONS
         . = ALIGN(4);
     }> FLASH
 
-    .reset :
-    {
-        . = ALIGN(4);
-        startup.o(.text)
-        . = ALIGN(4);
-    }> FLASH
+
 
     .text : 
     {
@@ -39,14 +34,14 @@ SECTIONS
     }> FLASH
 
 
-    _st_index_data = .;
+    _sidata = .;
     .data :
     {
         . = ALIGN(4);
-        _start_data = .;
+        _sdata = .;
         *(.data)
         . = ALIGN(4);
-        _end_data = .;
+        _edata = .;
     }> SRAM AT> FLASH
 
 
@@ -54,11 +49,11 @@ SECTIONS
     .bss :
     {
         . = ALIGN(4);
-        _start_bss = .;
+        _sbss = .;
         *(.bss)
         *(.COMMON)
         . = ALIGN(4);
-        _end_bss = .;
+        _ebss = .;
     }>SRAM
 
 }

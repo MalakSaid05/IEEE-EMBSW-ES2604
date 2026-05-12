@@ -1,19 +1,19 @@
 .thumb 
 .global gpfnvector
 .global Reset_Handler
-.word _st_index_data
-.word _start_data
-.word _end_data
-.word _start_bss
-.word _end_bss
+.word _sidata
+.word _sdata
+.word _edata
+.word _sbss
+.word _ebss
 
 .section .text.Reset_Handler
 
 Reset_Handler:
 
-    ldr r0, =_start_data
-    ldr r1, =_end_data
-    ldr r2, =_st_index_data
+    ldr r0, =_sdata
+    ldr r1, =_edata
+    ldr r2, =_sidata
 
 data_copy_loop:
     cmp r0, r1
@@ -25,8 +25,8 @@ data_copy_loop:
     b data_copy_loop
 
 data_copy_done:
-    ldr r0, =_start_bss
-    ldr r1, =_end_bss
+    ldr r0, =_sbss
+    ldr r1, =_ebss
 
 bss_init_loop:
     cmp r0, r1
@@ -66,9 +66,9 @@ gpfnvector:
     .word PendSV_Handler
     .word Systick_Handler
     .word WWWDG_Handler
-    .word EXTI16_PVD_Handler
-    .word EXTI21_TAMP_STAMP_Handler
-    .word EXTI22_RTC_WKUP_Handler
+    .word PVD_Handler
+    .word TAMPER_Handler
+    .word RTC_Handler
     .word FLASH_Handler
     .word RCC_Handler
     .word EXTI0_Handler
@@ -76,18 +76,17 @@ gpfnvector:
     .word EXTI2_Handler
     .word EXTI3_Handler
     .word EXTI4_Handler
-    .word DMA1_Stream0_Handler
-    .word DMA1_Stream1_Handler
-    .word DMA1_Stream2_Handler
-    .word DMA1_Stream3_Handler
-    .word DMA1_Stream4_Handler
-    .word DMA1_Stream5_Handler
-    .word DMA1_Stream6_Handler
-    .word ADC_Handler
+    .word DMA1_Channel1_Handler
+    .word DMA1_Channel2_Handler
+    .word DMA1_Channel3_Handler
+    .word DMA1_Channel4_Handler
+    .word DMA1_Channel5_Handler
+    .word DMA1_Channel6_Handler
+    .word ADC1_2_Handler
     .word EXTI9_5_Handler
-    .word TIM1_BRK_TIM9_Handler
-    .word TIM1_UP_TIM10_Handler
-    .word TIM1_TGR_COM_TIM11_Handler
+    .word TIM1_BRK_Handler
+    .word TIM1_UP_Handler
+    .word TIM1_TGR_COM_Handler
     .word TIM1_CC_Handler
     .word TIM2_Handler
     .word TIM3_Handler
@@ -100,27 +99,34 @@ gpfnvector:
     .word SPI2_Handler
     .word USART1_Handler
     .word USART2_Handler
+    .word USART3_Handler
     .word EXTI15_10_Handler
-    .word EXTI17_Handler
-    .word EXTI18_Handler
-    .word DMA1_Stream7_Handler
-    .word SDIO_Handler
+    .word RTCAlarm_Handler
+    .word OTF_FS_WKUP_Handler
+    .word 0
+    .word 0
+    .word 0
+    .word 0
+    .word 0
+    .word 0
     .word TIM5_Handler
     .word SPI3_Handler
-    .word DMA2_Stream0_Handler
-    .word DMA2_Stream1_Handler
-    .word DMA2_Stream2_Handler
-    .word DMA2_Stream3_Handler
-    .word DMA2_Stream4_Handler
+    .word UART4_Handler
+    .word UART5_Handler
+    .word TIM6_Handler
+    .word TIM7_Handler
+    .word DMA2_Channel1_Handler
+    .word DMA2_Channel2_Handler
+    .word DMA2_Channel3_Handler
+    .word DMA2_Channel4_Handler
+    .word DMA2_Channel5_Handler
+    .word ETH_Handler
+    .word ETH_WKUP_Handler
+    .word CAN2_TX_Handler
+    .word CAN2_RX0_Handler
+    .word CAN2_RX1_Handler
+    .word CAN2_SCE_Handler
     .word OTG_FS_Handler
-    .word DMA2_Stream5_Handler
-    .word DMA2_Stream6_Handle
-    .word DMA2_Stream7_Handler
-    .word USART6_Handler
-    .word I2C3_EV_Handler
-    .word I2C3_ER_Handler
-    .word FPU_Handler
-    .word SPI4_Handler
 
 .weak NMI_Handler
 .thumb_set NMI_Handler, Default_Handler
@@ -151,14 +157,14 @@ gpfnvector:
 .weak WWWDG_Handler
 .thumb_set WWWDG_Handler, Default_Handler
 
-.weak EXTI16_PVD_Handler
-.thumb_set EXTI16_PVD_Handler, Default_Handler
+.weak PVD_Handler
+.thumb_set PVD_Handler, Default_Handler
 
-.weak EXTI21_TAMP_STAMP_Handler
-.thumb_set EXTI21_TAMP_STAMP_Handler, Default_Handler
+.weak TAMPER_Handler
+.thumb_set TAMPER_Handler, Default_Handler
 
-.weak EXTI22_RTC_WKUP_Handler
-.thumb_set EXTI22_RTC_WKUP_Handler, Default_Handler
+.weak RTC_Handler
+.thumb_set RTC_Handler, Default_Handler
 
 .weak FLASH_Handler
 .thumb_set FLASH_Handler, Default_Handler
@@ -181,41 +187,36 @@ gpfnvector:
 .weak EXTI4_Handler
 .thumb_set EXTI4_Handler, Default_Handler
 
-.weak DMA1_Stream0_Handler
-.thumb_set DMA1_Stream0_Handler, Default_Handler
+.weak DMA1_Channel1_Handler
+.thumb_set DMA1_Channel1_Handler, Default_Handler
 
-.weak DMA1_Stream1_Handler
-.thumb_set DMA1_Stream1_Handler, Default_Handler
+.weak DMA1_Channel2_Handler
+.thumb_set DMA1_Channel2_Handler, Default_Handler
 
-.weak DMA1_Stream2_Handler
-.thumb_set DMA1_Stream2_Handler, Default_Handler
+.weak DMA1_Channel3_Handler
+.thumb_set DMA1_Channel3_Handler, Default_Handler3
+.weak DMA1_Channel4_Han3ler
+.thumb_set DMA1_Channel4_Handler, Default_Handle5
+.weak DMA1_Channel5_Handle6
+.thumb_set DMA1_Channel5_Handler, Default_Handler
 
-.weak DMA1_Stream3_Handler
-.thumb_set DMA1_Stream3_Handler, Default_Handler
+.weak DMA1_Channel6_Handler
+.thumb_set DMA1_Channel6_Handler, Default_Handler
 
-.weak DMA1_Stream4_Handler
-.thumb_set DMA1_Stream4_Handler, Default_Handler
-
-.weak DMA1_Stream5_Handler
-.thumb_set DMA1_Stream5_Handler, Default_Handler
-
-.weak DMA1_Stream6_Handler
-.thumb_set DMA1_Stream6_Handler, Default_Handler
-
-.weak ADC_Handler
-.thumb_set ADC_Handler, Default_Handler
+.weak ADC1_2_Handler
+.thumb_set ADC1_2_Handler, Default_Handler
 
 .weak EXTI9_5_Handler
 .thumb_set EXTI9_5_Handler, Default_Handler
 
-.weak TIM1_BRK_TIM9_Handler
-.thumb_set TIM1_BRK_TIM9_Handler, Default_Handler
+.weak TIM1_BRK_Handler
+.thumb_set TIM1_BRK_Handler, Default_Handler
 
-.weak TIM1_UP_TIM10_Handler
-.thumb_set TIM1_UP_TIM10_Handler, Default_Handler
+.weak TIM1_UP_Handler
+.thumb_set TIM1_UP_Handler, Default_Handler
 
-.weak TIM1_TGR_COM_TIM11_Handler
-.thumb_set TIM1_TGR_COM_TIM11_Handler, Default_Handler
+.weak TIM1_TGR_COM_Handler
+.thumb_set TIM1_TGR_COM_Handler, Default_Handler
 
 .weak TIM1_CC_Handler
 .thumb_set TIM1_CC_Handler, Default_Handler
@@ -253,20 +254,17 @@ gpfnvector:
 .weak USART2_Handler
 .thumb_set USART2_Handler, Default_Handler
 
+.weak USART3_Handler
+.thumb_set USART3_Handler, Default_Handler
+
 .weak EXTI15_10_Handler
 .thumb_set EXTI15_10_Handler, Default_Handler
 
-.weak EXTI17_Handler
-.thumb_set EXTI17_Handler, Default_Handler
+.weak RTCAlarm_Handler
+.thumb_set RTCAlarm_Handler, Default_Handler
 
-.weak EXTI18_Handler
-.thumb_set EXTI18_Handler, Default_Handler
-
-.weak DMA1_Stream7_Handler
-.thumb_set DMA1_Stream7_Handler, Default_Handler
-
-.weak SDIO_Handler
-.thumb_set SDIO_Handler, Default_Handler
+.weak OTF_FS_WKUP_Handler
+.thumb_set OTF_FS_WKUP_Handler, Default_Handler
 
 .weak TIM5_Handler
 .thumb_set TIM5_Handler, Default_Handler
@@ -274,45 +272,51 @@ gpfnvector:
 .weak SPI3_Handler
 .thumb_set SPI3_Handler, Default_Handler
 
-.weak DMA2_Stream0_Handler
-.thumb_set DMA2_Stream0_Handler, Default_Handler
+.weak UART4_Handler
+.thumb_set UART4_Handler, Default_Handler
 
-.weak DMA2_Stream1_Handler
-.thumb_set DMA2_Stream1_Handler, Default_Handler
+.weak UART5_Handler
+.thumb_set UART5_Handler, Default_Handler
 
-.weak DMA2_Stream2_Handler
-.thumb_set DMA2_Stream2_Handler, Default_Handler
+.weak TIM6_Handler
+.thumb_set TIM6_Handler, Default_Handler
 
-.weak DMA2_Stream3_Handler
-.thumb_set DMA2_Stream3_Handler, Default_Handler
+.weak TIM7_Handler
+.thumb_set TIM7_Handler, Default_Handler
 
-.weak DMA2_Stream4_Handler
-.thumb_set DMA2_Stream4_Handler, Default_Handler
+.weak DMA2_Channel1_Handler
+.thumb_set DMA2_Channel1_Handler, Default_Handler
+
+.weak DMA2_Channel2_Handler
+.thumb_set DMA2_Channel2_Handler, Default_Handler
+
+.weak DMA2_Channel3_Handler
+.thumb_set DMA2_Channel3_Handler, Default_Handler
+
+.weak DMA2_Channel4_Handler
+.thumb_set DMA2_Channel4_Handler, Default_Handler
+
+.weak DMA2_Channel5_Handler
+.thumb_set DMA2_Channel5_Handler, Default_Handler
+
+.weak ETH_Handler
+.thumb_set ETH_Handler, Default_Handler
+
+.weak ETH_WKUP_Handler
+.thumb_set ETH_WKUP_Handler, Default_Handler
+
+.weak CAN2_TX_Handler
+.thumb_set CAN2_TX_Handler, Default_Handler
+
+.weak CAN2_RX0_Handler
+.thumb_set CAN2_RX0_Handler, Default_Handler
+
+.weak CAN2_RX1_Handler
+.thumb_set CAN2_RX1_Handler, Default_Handler
+
+.weak CAN2_SCE_Handler
+.thumb_set CAN2_SCE_Handler, Default_Handler
 
 .weak OTG_FS_Handler
 .thumb_set OTG_FS_Handler, Default_Handler
-
-.weak DMA2_Stream5_Handler
-.thumb_set DMA2_Stream5_Handler, Default_Handler
-
-.weak DMA2_Stream6_Handle
-.thumb_set DMA2_Stream6_Handle, Default_Handler
-
-.weak DMA2_Stream7_Handler
-.thumb_set DMA2_Stream7_Handler, Default_Handler
-
-.weak USART6_Handler
-.thumb_set USART6_Handler, Default_Handler
-
-.weak I2C3_EV_Handler
-.thumb_set I2C3_EV_Handler, Default_Handler
-
-.weak I2C3_ER_Handler
-.thumb_set I2C3_ER_Handler, Default_Handler
-
-.weak FPU_Handler
-.thumb_set FPU_Handler, Default_Handler
-
-.weak SPI4_Handler
-.thumb_set SPI4_Handler, Default_Handler
 
